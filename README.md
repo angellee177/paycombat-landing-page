@@ -1,10 +1,18 @@
 
 # Paycombat Landing page
+![](https://img.shields.io/badge/Next.js-15-black?logo=nextdotjs)
+![](https://img.shields.io/badge/Payload_CMS-3.0-blueviolet?logo=payloadcms)
+![](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)
+![](https://img.shields.io/badge/Tailwind_CSS-4.0-38bdf8?logo=tailwindcss)
+![](https://img.shields.io/badge/TypeScript-5.0-3178c6?logo=typescript)
+![](https://img.shields.io/badge/pnpm-%3E=8.0-4B4B77?logo=pnpm)
+![](https://img.shields.io/badge/Podman-rootless-892ca0?logo=podman)
+![](https://img.shields.io/badge/Docker-compatible-2496ed?logo=docker)
+![](https://img.shields.io/badge/License-MIT-green)
+
 ## Description
 
 This repository built for Paycombat landing page purpose, CMS-driven architecture. It uses Payload CMS 3 and Next.js 15, and is containerized for easy local development with Podman and PostgreSQL.
-
----
 
 ## 🛠 **Project Architecture**
 
@@ -27,8 +35,6 @@ Located in [src/blocks/](src/blocks), these generalized components power all pag
 - **ActionBanner:** High-impact conversion cards.
 - **AccordionList:** Categorized listings (Jobs, FAQs).
 
----
-
 ## Landing page config
 See the Payload config and collections in [src/payload.config.ts](./src/payload.config.ts) and [src/collections/](./src/collections/).
 
@@ -45,7 +51,7 @@ Before you start, ensure you have the following installed:
 ```bash
 pnpm install
 ```
----
+
 ## Running the Project
 
 You can run the project locally or in containers. Below are instructions for both.
@@ -104,7 +110,6 @@ podman-compose -f podman-compose.yml down
 - The `postgres_data` volume persists your database between runs.
 - For production, set strong secrets and review Dockerfile for best practices.
 
----
 ## Running Tests
 
 You can run tests to ensure the application is functioning as expected.
@@ -112,8 +117,6 @@ You can run tests to ensure the application is functioning as expected.
 ```bash
 pnpm run test
 ```
-
----
 
 ## Documentation
 
