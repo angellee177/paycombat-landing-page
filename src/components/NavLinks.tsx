@@ -33,7 +33,9 @@ export function NavLinks({ links }: NavLinksProps) {
     return path.replace(/\/$/, '')
   }
 
+  const isExternal = (href: string) => href.startsWith('http://') || href.startsWith('https://')
   const isActive = (href: string) => {
+    if (isExternal(href)) return false
     const [hrefPath, hrefHash] = href.split('#')
     const normHrefPath = normalizePath(hrefPath)
     const normPath = normalizePath(cleanPathname)
@@ -41,14 +43,25 @@ export function NavLinks({ links }: NavLinksProps) {
     if (hrefHash) {
       return normPath === normHrefPath && locationHash === hrefHash
     }
-    // If link has no hash, only match if path matches and there is no hash in the current URL
-    return normPath === normHrefPath && !locationHash
+    // Special case: root link is only active on homepage
+    if (normHrefPath === '/') {
+      return normPath === '/'
+    }
+    // For other links, match if current path starts with link path (for section highlighting)
+    return normPath === normHrefPath || normPath.startsWith(normHrefPath + '/')
   }
 
   return (
     <div className="hidden md:flex items-center gap-1 lg:gap-2">
       {links.map((link, index) => {
         const active = isActive(link.href)
+        // Debug logging for active state
+        console.log('NavLinks debug:', {
+          pathname,
+          linkHref: link.href,
+          active,
+          locationHash,
+        })
         return (
           <Link
             key={`${link.href}-${index}`}
