@@ -8,6 +8,15 @@ export const FaqBlock: Block = {
   },
   fields: [
     {
+      name: 'id',
+      type: 'text',
+      label: 'Section ID',
+      admin: {
+        description: 'Set a unique anchor for this section (e.g. "faq") for hash navigation.',
+        placeholder: 'faq',
+      },
+    },
+    {
       name: 'headline',
       type: 'text',
       required: true,

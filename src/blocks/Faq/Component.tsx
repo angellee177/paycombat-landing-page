@@ -13,12 +13,12 @@ type FaqSectionProps = {
   items?: FaqItem[] | null
 }
 
-export function FaqSection({ headline, description, items }: FaqSectionProps) {
+export function FaqSection({ id, headline, description, items }: FaqSectionProps) {
   const safeItems = (items || []).filter((item) => item.question?.trim())
   if (!headline && safeItems.length === 0) return null
 
   return (
-    <section className="py-24 px-8 bg-white border-t border-slate-100">
+    <section id={id ?? undefined} className="py-24 px-8 bg-white border-t border-slate-100">
       <div className="max-w-3xl mx-auto">
         {headline ? (
           <h2
@@ -28,7 +28,9 @@ export function FaqSection({ headline, description, items }: FaqSectionProps) {
           </h2>
         ) : null}
         {description ? (
-          <p className="text-center text-slate-600 font-medium mb-10 max-w-2xl mx-auto">{description}</p>
+          <p className="text-center text-slate-600 font-medium mb-10 max-w-2xl mx-auto">
+            {description}
+          </p>
         ) : null}
 
         <div className="space-y-3">

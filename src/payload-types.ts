@@ -273,6 +273,7 @@ export interface Page {
         blockType: 'howItWorks';
       }
     | {
+        id?: string | null;
         headline: string;
         /**
          * Optional intro shown under the headline.
@@ -285,7 +286,6 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
-        id?: string | null;
         blockName?: string | null;
         blockType: 'faq';
       }
@@ -386,6 +386,7 @@ export interface Page {
         blockType: 'accordionList';
       }
     | {
+        id?: string | null;
         title: string;
         description?: string | null;
         formTitle?: string | null;
@@ -440,7 +441,6 @@ export interface Page {
               }[]
             | null;
         };
-        id?: string | null;
         blockName?: string | null;
         blockType: 'contactSplit';
       }
@@ -765,6 +765,7 @@ export interface PagesSelect<T extends boolean = true> {
         faq?:
           | T
           | {
+              id?: T;
               headline?: T;
               description?: T;
               items?:
@@ -774,7 +775,6 @@ export interface PagesSelect<T extends boolean = true> {
                     answer?: T;
                     id?: T;
                   };
-              id?: T;
               blockName?: T;
             };
         ctaBanner?:
@@ -862,6 +862,7 @@ export interface PagesSelect<T extends boolean = true> {
         contactSplit?:
           | T
           | {
+              id?: T;
               title?: T;
               description?: T;
               formTitle?: T;
@@ -900,7 +901,6 @@ export interface PagesSelect<T extends boolean = true> {
                           id?: T;
                         };
                   };
-              id?: T;
               blockName?: T;
             };
         bentoGrid?:
