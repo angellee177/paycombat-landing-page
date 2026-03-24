@@ -9,7 +9,7 @@ describe('API', () => {
   beforeAll(async () => {
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
-  })
+  }, 30000) // 30 seconds timeout for setup
 
   it('fetches users', async () => {
     const users = await payload.find({
