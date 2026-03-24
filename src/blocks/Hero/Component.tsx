@@ -131,27 +131,19 @@ export function HeroSection(props: HeroSectionProps) {
   }
 
   // #region agent log
-  fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
-    body: JSON.stringify({
-      sessionId: '92e393',
-      runId: `run-${Date.now()}`,
-      hypothesisId: 'H7',
-      location: 'src/blocks/Hero/Component.tsx:26',
-      message: 'Hero media data',
-      data: {
-        hasMediaObject: Boolean(media),
-        imageUrl,
-        imageAlt,
-        hasHeroText,
-        sectionPadding,
-        layout,
-        actionsCount: actions.length,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {})
+  // fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+  //   body: JSON.stringify({
+  //     sessionId: '92e393',
+  //     runId: `run-${Date.now()}`,
+  //     hypothesisId: 'H10',
+  //     location: 'src/blocks/Hero/Component.tsx:12',
+  //     message: 'Hero render snapshot',
+  //     data: { headline, description },
+  //     timestamp: Date.now(),
+  //   }),
+  // }).catch(() => {})
   // #endregion
 
   return (

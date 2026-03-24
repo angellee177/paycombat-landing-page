@@ -30,27 +30,6 @@ export function HowItWorksSection({ headline, description, steps }: HowItWorksPr
   const activeStep = safeSteps[activeStepIndex]
   if (!headline && !description && safeSteps.length === 0) return null
 
-  // #region agent log
-  fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
-    body: JSON.stringify({
-      sessionId: '92e393',
-      runId: `run-${Date.now()}`,
-      hypothesisId: 'H12',
-      location: 'src/blocks/HowItWorks/Component.tsx:20',
-      message: 'HowItWorks render snapshot',
-      data: {
-        hasHeadline: Boolean(headline),
-        stepsCount: safeSteps.length,
-        activeStepIndex,
-        activeStepTitle: activeStep?.title ?? null,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {})
-  // #endregion
-
   return (
     <section className="py-24 px-8 bg-surface-container-low">
       <div className="max-w-7xl mx-auto">
@@ -70,25 +49,6 @@ export function HowItWorksSection({ headline, description, steps }: HowItWorksPr
                         aria-pressed={isActive}
                         onClick={() => {
                           setActiveStepIndex(index)
-                          // #region agent log
-                          fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
-                            body: JSON.stringify({
-                              sessionId: '92e393',
-                              runId: `run-${Date.now()}`,
-                              hypothesisId: 'H13',
-                              location: 'src/blocks/HowItWorks/Component.tsx:45',
-                              message: 'HowItWorks step clicked',
-                              data: {
-                                clickedIndex: index,
-                                clickedTitle: step.title ?? null,
-                                totalSteps: safeSteps.length,
-                              },
-                              timestamp: Date.now(),
-                            }),
-                          }).catch(() => {})
-                          // #endregion
                         }}
                         className={`w-full text-left flex items-center gap-4 cursor-pointer ${isActive ? 'font-bold text-primary' : 'font-semibold text-on-surface'}`}
                       >

@@ -8,6 +8,7 @@ import config from '@/payload.config'
 import { resolveSiteLink } from '@/lib/resolveSiteLink'
 import type { Media } from '@/payload-types'
 import { NavLinks } from '@/components/NavLinks'
+import { MobileNav } from '@/components/MobileNav'
 
 type SiteLinkConfig = {
   label?: string | null
@@ -41,7 +42,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   const brandName = siteSettings.brandName || 'PayCombat'
   const headerLogoMedia =
-    typeof siteSettings.headerLogo === 'object' && siteSettings.headerLogo ? siteSettings.headerLogo : null
+    typeof siteSettings.headerLogo === 'object' && siteSettings.headerLogo
+      ? siteSettings.headerLogo
+      : null
   const headerLogoUrl = headerLogoMedia?.url || ''
   const headerLogoAlt = headerLogoMedia?.alt || brandName
   const headerLogoWidth = headerLogoMedia?.width || 320
@@ -60,7 +63,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const primaryCTA = siteSettings.headerPrimaryCTA || {}
   const secondaryCTA = siteSettings.headerSecondaryCTA || {}
   const footerDescription =
-    siteSettings.footerDescription || '© 2026 PayCombat. All rights reserved. Built for the modern architect.'
+    siteSettings.footerDescription ||
+    '© 2026 PayCombat. All rights reserved. Built for the modern architect.'
   const footerLinks = (siteSettings.footerLinks || [])
     .map((link) =>
       resolveSiteLink({
@@ -71,19 +75,19 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     .filter(Boolean) as { label: string; href: string }[]
 
   // #region agent log
-  fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
-    body: JSON.stringify({
-      sessionId: '92e393',
-      runId: `run-${Date.now()}`,
-      hypothesisId: 'H5',
-      location: 'src/app/(frontend)/layout.tsx:12',
-      message: 'Rendering frontend layout with global footer',
-      data: { hasFooter: true, hasGlobalSettings: Boolean(siteSettings), headerLinksCount: headerLinks.length },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {})
+  // fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+  //   body: JSON.stringify({
+  //     sessionId: '92e393',
+  //     runId: `run-${Date.now()}`,
+  //     hypothesisId: 'H5',
+  //     location: 'src/app/(frontend)/layout.tsx:12',
+  //     message: 'Rendering frontend layout with global footer',
+  //     data: { hasFooter: true, hasGlobalSettings: Boolean(siteSettings), headerLinksCount: headerLinks.length },
+  //     timestamp: Date.now(),
+  //   }),
+  // }).catch(() => {})
   // #endregion
 
   return (
@@ -110,15 +114,44 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
                   unoptimized={headerLogoIsSvg}
                 />
               ) : (
-                <span className="text-2xl font-black tracking-tighter text-slate-900">{brandName}</span>
+                <span className="text-2xl font-black tracking-tighter text-slate-900">
+                  {brandName}
+                </span>
               )}
             </Link>
 
-            {/* Nav Links */}
-            <NavLinks links={headerLinks} />
-
-            {/* CTAs - Right aligned */}
-            <div className="flex items-center gap-3 md:gap-4 shrink-0">
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center gap-3 md:gap-4 flex-1">
+              <NavLinks links={headerLinks} />
+            </div>
+            {/* Mobile Nav */}
+            <div className="md:hidden flex items-center gap-2">
+              <MobileNav
+                links={headerLinks}
+                ctas={[
+                  secondaryCTA.label ? (
+                    <Link
+                      key="mobile-secondary"
+                      href={secondaryCTA.url || '#'}
+                      className="text-slate-600 font-medium px-3 py-2 hover:bg-slate-100/50 rounded-lg transition-all text-base whitespace-nowrap text-center"
+                    >
+                      {secondaryCTA.label}
+                    </Link>
+                  ) : null,
+                  primaryCTA.label ? (
+                    <Link
+                      key="mobile-primary"
+                      href={primaryCTA.url || '#'}
+                      className="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold px-5 py-3 rounded-full hover:scale-95 transition-transform duration-200 shadow-lg text-base whitespace-nowrap text-center"
+                    >
+                      {primaryCTA.label}
+                    </Link>
+                  ) : null,
+                ].filter(Boolean)}
+              />
+            </div>
+            {/* CTAs - Desktop */}
+            <div className="hidden md:flex items-center gap-3 md:gap-4 shrink-0">
               {secondaryCTA.label ? (
                 <Link
                   href={secondaryCTA.url || '#'}

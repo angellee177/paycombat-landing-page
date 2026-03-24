@@ -43,6 +43,7 @@ type ContactSplitProps = {
 }
 
 export function ContactSplitComponent({
+  id,
   title,
   description,
   formTitle,
@@ -58,7 +59,7 @@ export function ContactSplitComponent({
   const highlight = highlightCard?.enabled && highlightCard?.items?.length ? highlightCard : null
 
   return (
-    <section id="contact-us" className="py-20 md:py-28 px-8 bg-surface">
+    <section id={id || 'contact-us'} className="py-20 md:py-28 px-8 bg-surface">
       <div className="max-w-7xl mx-auto">
         {(title || description) && (
           <div className="text-center mb-16 md:mb-20 space-y-4">

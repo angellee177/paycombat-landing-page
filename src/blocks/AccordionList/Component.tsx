@@ -34,6 +34,7 @@ type AccordionListProps = {
 }
 
 export function AccordionListComponent({
+  id,
   title,
   description,
   showSearch,
@@ -64,7 +65,7 @@ export function AccordionListComponent({
   })).filter((group) => group.items?.length ?? 0 > 0)
 
   return (
-    <section className="py-20 md:py-28 px-8 bg-surface">
+    <section id={id || undefined} className="py-20 md:py-28 px-8 bg-surface">
       <div className="max-w-5xl mx-auto">
         {(title || description) && (
           <div className="text-center mb-12 md:mb-16 space-y-4">
