@@ -1,67 +1,124 @@
-# Payload Blank Template
 
-This template comes configured with the bare minimum to get started on anything you need.
+# Paycombat Landing page
+## Description
 
-## Quick start
+This repository built for Paycombat landing page purpose, CMS-driven architecture. It uses Payload CMS 3 and Next.js 15, and is containerized for easy local development with Podman and PostgreSQL.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+---
 
-## Quick Start - local setup
+## 🛠 **Project Architecture**
 
-To spin up this template locally, follow these steps:
+This project follows a CMS-first philosophy. All marketing pages are composed of reusable, abstracted UI blocks.
 
-### Clone
+### Core Stack
+- **Framework:** Next.js 15 (App Router)
+- **CMS:** Payload 3.0
+- **Database:** PostgreSQL via postgres-adapter
+- **Styling:** Tailwind CSS v4
+- **Runtime:** Podman (Daemonless & Rootless)
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+### Reusable Block Library
 
-### Development
+Located in [src/blocks/](src/blocks), these generalized components power all pages (Landing, About, Careers):
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+- **FeatureGrid:** Flexible icon/text grids.
+- **ProfileGrid:** Team/Entity galleries with hover effects.
+- **SplitContent:** 50/50 media and text layouts.
+- **ActionBanner:** High-impact conversion cards.
+- **AccordionList:** Categorized listings (Jobs, FAQs).
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+---
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+## Landing page config
+See the Payload config and collections in [src/payload.config.ts](./src/payload.config.ts) and [src/collections/](./src/collections/).
 
-#### Docker (Optional)
+---
+## Project Setup
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+Before you start, ensure you have the following installed:
+- **Node.js** (v18 or higher recommended)
+- **pnpm** (for dependency management)
+- **Podman** (for containerized development)
+- **PostgreSQL** (local or via container)
 
-To do so, follow these steps:
+### Install the Dependencies
+```bash
+pnpm install
+```
+---
+## Running the Project
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+You can run the project locally or in containers. Below are instructions for both.
 
-## How it works
+### 1. Local Development Setup
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+#### Development Mode
 
-### Collections
+```bash
+pnpm run dev
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+This command will start the application in development mode on http://localhost:3000.
 
-- #### Users (Authentication)
+#### Production Build
 
-  Users are auth-enabled collections that have access to the admin panel.
+```bash
+pnpm run build && pnpm start
+```
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+This will build and start the application in production mode.
 
-- #### Media
+#### Step 1: Set Up Environment Variables
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+Create a `.env` file in the root directory with the following configuration:
 
-### Docker
+```env
+DATABASE_URL=your-database-url
+PAYLOAD_SECRET=your-secret
+DB_PORT=your-db-port
+PORT=your-local-port
+```
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+Check the `.env-example` file if available.
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+### 2. Containerized Setup (Podman + PostgreSQL)
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+#### Build and Start Containers
 
-## Questions
+```bash
+podman-compose -f podman-compose.yml up --build
+```
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+#### Access the App
+- Frontend/Admin: http://localhost:3000
+- PostgreSQL: localhost:5432 (user: payload, password: payload, db: payload)
+
+#### Stop the Containers
+
+```bash
+podman-compose -f podman-compose.yml down
+```
+
+#### Notes
+- The `media` folder is mounted for uploads.
+- The `postgres_data` volume persists your database between runs.
+- For production, set strong secrets and review Dockerfile for best practices.
+
+---
+## Running Tests
+
+You can run tests to ensure the application is functioning as expected.
+
+```bash
+pnpm run test
+```
+
+---
+
+## Documentation
+
+See the Payload admin UI at http://localhost:3000/admin for API and content management.
+
+## Additional Notes
+- **Environment Variables**: The `.env` file is critical for configuring the application, especially for connecting to PostgreSQL and setting secrets.
+- **Troubleshooting**: If you change dependencies, rebuild with `--build`. For logs: `podman-compose -f podman-compose.yml logs`.
