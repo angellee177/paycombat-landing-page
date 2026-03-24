@@ -1,7 +1,7 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { NavLinks } from './NavLinks'
 
 export function MobileNav({
   links,
@@ -11,31 +11,6 @@ export function MobileNav({
   ctas?: React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
-
-  // Active state logic (same as NavLinks)
-  const pathname = usePathname()
-  const [locationHash, setLocationHash] = useState('')
-  useEffect(() => {
-    const updateHash = () => setLocationHash(window.location.hash.replace('#', ''))
-    updateHash()
-    window.addEventListener('hashchange', updateHash)
-    return () => window.removeEventListener('hashchange', updateHash)
-  }, [])
-  const [currentPath] = pathname.split('#')
-  const cleanPathname = currentPath
-  const normalizePath = (path: string) => {
-    if (path === '/') return '/'
-    return path.replace(/\/$/, '')
-  }
-  const isActive = (href: string) => {
-    const [hrefPath, hrefHash] = href.split('#')
-    const normHrefPath = normalizePath(hrefPath)
-    const normPath = normalizePath(cleanPathname)
-    if (hrefHash) {
-      return normPath === normHrefPath && locationHash === hrefHash
-    }
-    return normPath === normHrefPath && !locationHash
-  }
 
   return (
     <>
@@ -66,22 +41,16 @@ export function MobileNav({
           </button>
         </div>
         <div className="flex flex-col gap-2 px-6 py-4">
-          {links.map((link, i) => {
-            const active = isActive(link.href)
-            return (
-              <Link
-                key={link.href + i}
-                href={link.href}
-                className={`py-3 px-2 text-lg font-semibold rounded hover:bg-slate-100 ${
-                  active ? 'text-primary' : 'text-slate-600'
-                }`}
-                aria-current={active ? 'page' : undefined}
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </Link>
-            )
-          })}
+          {links.map((link, i) => (
+            <Link
+              key={link.href + i}
+              href={link.href}
+              className="py-3 px-2 text-lg font-semibold rounded hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
         {ctas && <div className="flex flex-col gap-2 px-6 pb-4">{ctas}</div>}
       </nav>

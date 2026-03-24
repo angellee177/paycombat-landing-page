@@ -15,27 +15,34 @@ type NavLinksProps = {
 
 export function NavLinks({ links }: NavLinksProps) {
   const pathname = usePathname()
-  const [hash, setHash] = useState('')
+  const [locationHash, setLocationHash] = useState('')
 
   useEffect(() => {
-    const updateHash = () => setHash(window.location.hash)
+    const updateHash = () => setLocationHash(window.location.hash.replace('#', ''))
     updateHash()
     window.addEventListener('hashchange', updateHash)
     return () => window.removeEventListener('hashchange', updateHash)
   }, [])
 
+  const [currentPath] = pathname.split('#')
+  const cleanPathname = currentPath
+
+  // Helper to normalize paths (remove trailing slash except for root)
   const normalizePath = (path: string) => {
     if (path === '/') return '/'
     return path.replace(/\/$/, '')
   }
+
   const isActive = (href: string) => {
     const [hrefPath, hrefHash] = href.split('#')
     const normHrefPath = normalizePath(hrefPath)
-    const normPath = normalizePath(pathname)
+    const normPath = normalizePath(cleanPathname)
+    // If link has a hash, both path and hash must match
     if (hrefHash) {
-      return normPath === normHrefPath && hash.replace('#', '') === hrefHash
+      return normPath === normHrefPath && locationHash === hrefHash
     }
-    return normPath === normHrefPath && !hash
+    // If link has no hash, only match if path matches and there is no hash in the current URL
+    return normPath === normHrefPath && !locationHash
   }
 
   return (
@@ -45,6 +52,7 @@ export function NavLinks({ links }: NavLinksProps) {
         return (
           <Link
             key={`${link.href}-${index}`}
+            aria-current={active ? 'page' : undefined}
             className={`font-medium transition-all duration-300 px-3 py-2 whitespace-nowrap text-sm lg:text-base ${
               active
                 ? 'text-primary font-bold border-b-2 border-primary'
