@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { resolveSiteLink } from '@/lib/resolveSiteLink'
 import type { Media } from '@/payload-types'
+import { NavLinks } from '@/components/NavLinks'
 
 type SiteLinkConfig = {
   label?: string | null
@@ -114,17 +115,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             </Link>
 
             {/* Nav Links */}
-            <div className="hidden md:flex items-center gap-1 lg:gap-2">
-              {headerLinks.map((link, index) => (
-                <Link
-                  key={`${link.href}-${index}`}
-                  className="text-slate-600 font-medium hover:text-slate-900 transition-all duration-300 px-3 py-2 whitespace-nowrap text-sm lg:text-base"
-                  href={link.href}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+            <NavLinks links={headerLinks} />
 
             {/* CTAs - Right aligned */}
             <div className="flex items-center gap-3 md:gap-4 shrink-0">
