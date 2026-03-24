@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
+import { useSubmitMessage } from '@/lib/useSubmitMessage'
 
 type FormField = {
   id?: string | null
@@ -52,11 +54,25 @@ export function ContactSplitComponent({
   infoCards,
   highlightCard,
 }: ContactSplitProps) {
+  // Always call hooks at the top
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const { loading, error, success, submitMessage } = useSubmitMessage()
+
+  // Early return after hooks
   if (!title && !description && (!formFields || formFields.length === 0)) return null
 
   const fields = formFields || []
   const infos = infoCards || []
   const highlight = highlightCard?.enabled && highlightCard?.items?.length ? highlightCard : null
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    await submitMessage(form)
+  }
 
   return (
     <section id={id || 'contact-us'} className="py-20 md:py-28 px-8 bg-surface">
@@ -83,58 +99,74 @@ export function ContactSplitComponent({
               <h3 className="text-2xl font-bold mb-8 text-on-surface">{formTitle}</h3>
             ) : null}
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {fields.map((field) => {
-                  const fieldKey = field.id ?? field.name ?? `field-${field.label}`
-                  const isFullWidth = field.fullWidth === true
-                  const wrapperClass = isFullWidth ? 'sm:col-span-2' : ''
-
-                  if (field.type === 'textarea') {
-                    return (
-                      <div key={fieldKey} className="sm:col-span-2">
-                        {field.label ? (
-                          <label className="block text-sm font-semibold text-on-surface mb-2">
-                            {field.label}
-                            {field.required && <span className="text-error"> *</span>}
-                          </label>
-                        ) : null}
-                        <textarea
-                          className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none resize-none"
-                          placeholder={field.placeholder || ''}
-                          required={field.required ?? false}
-                          rows={4}
-                        />
-                      </div>
-                    )
-                  }
-
-                  return (
-                    <div key={fieldKey} className={wrapperClass}>
-                      {field.label ? (
-                        <label className="block text-sm font-semibold text-on-surface mb-2">
-                          {field.label}
-                          {field.required && <span className="text-error"> *</span>}
-                        </label>
-                      ) : null}
-                      <input
-                        className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none"
-                        placeholder={field.placeholder || ''}
-                        required={field.required ?? false}
-                        type={field.type || 'text'}
-                      />
-                    </div>
-                  )
-                })}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-on-surface mb-2">
+                    Name <span className="text-error">*</span>
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-on-surface mb-2">
+                    Email <span className="text-error">*</span>
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-on-surface mb-2">
+                    Subject <span className="text-error">*</span>
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none"
+                    name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-on-surface mb-2">
+                    Message <span className="text-error">*</span>
+                  </label>
+                  <textarea
+                    className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none resize-none"
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    required
+                    rows={4}
+                  />
+                </div>
               </div>
 
               <button
                 className="w-full py-4 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
                 type="submit"
+                disabled={loading}
               >
-                {submitButtonLabel || 'Send Message'}
+                {loading ? 'Sending...' : submitButtonLabel || 'Send Message'}
                 <span className="material-symbols-outlined text-sm">send</span>
               </button>
+              {error && <div className="text-error text-center font-semibold mt-2">{error}</div>}
+              {success && (
+                <div className="text-success text-center font-semibold mt-2">
+                  Message sent successfully!
+                </div>
+              )}
             </form>
           </div>
 
@@ -149,7 +181,9 @@ export function ContactSplitComponent({
                     className="p-6 bg-surface-container-lowest rounded-xl border border-outline-variant/30 flex items-start gap-4 hover:shadow-md transition-shadow"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                      <span className="material-symbols-outlined text-xl">{info.icon || 'info'}</span>
+                      <span className="material-symbols-outlined text-xl">
+                        {info.icon || 'info'}
+                      </span>
                     </div>
                     <div className="min-w-0 flex-1">
                       {info.label ? (
@@ -198,7 +232,9 @@ export function ContactSplitComponent({
                             </span>
                           )}
                           {!item.isClosed && (
-                            <span className="font-bold text-on-primary whitespace-nowrap">{item.value}</span>
+                            <span className="font-bold text-on-primary whitespace-nowrap">
+                              {item.value}
+                            </span>
                           )}
                         </div>
                       </div>

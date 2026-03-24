@@ -28,14 +28,16 @@ export function MobileNav({
     if (path === '/') return '/'
     return path.replace(/\/$/, '')
   }
+  const isExternal = (href: string) => href.startsWith('http://') || href.startsWith('https://')
   const isActive = (href: string) => {
+    if (isExternal(href)) return false
     const [hrefPath, hrefHash] = href.split('#')
     const normHrefPath = normalizePath(hrefPath)
     const normPath = normalizePath(cleanPathname)
     if (hrefHash) {
       return normPath === normHrefPath && locationHash === hrefHash
     }
-    return normPath === normHrefPath && !locationHash
+    return normPath === normHrefPath || normPath.startsWith(normHrefPath + '/')
   }
 
   return (

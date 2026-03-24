@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     pages: Page;
+    messages: Message;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -91,11 +93,9 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
-    'contact-us-settings': ContactUsSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    'contact-us-settings': ContactUsSettingsSelect<false> | ContactUsSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -131,6 +131,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  roles: ('admin' | 'editor' | 'user')[];
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -532,6 +533,21 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: number;
+  name: string;
+  from?: string | null;
+  email: string;
+  subject: string;
+  message: string;
+  resolved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -565,6 +581,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: number | Message;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -613,6 +633,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -995,6 +1016,20 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  name?: T;
+  from?: T;
+  email?: T;
+  subject?: T;
+  message?: T;
+  resolved?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -1080,19 +1115,6 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-us-settings".
- */
-export interface ContactUsSetting {
-  id: number;
-  /**
-   * All contact form submissions will be sent to this address.
-   */
-  contactFormRecipient: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1127,16 +1149,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-us-settings_select".
- */
-export interface ContactUsSettingsSelect<T extends boolean = true> {
-  contactFormRecipient?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -1,0 +1,12 @@
+/* Hide all Create New buttons in the Messages collection (top and empty state) */
+[data-e2e="create-new"],
+button[data-e2e="create-new"],
+a[href$="/admin/collections/messages/create"] {
+  display: none !important;
+}
+
+// Hide Create New buttons in Payload admin view
+[data-e2e="create-new-payload"],
+button[data-e2e="create-new-payload"] {
+  display: none !important;
+}
