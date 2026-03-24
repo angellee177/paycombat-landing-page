@@ -4,6 +4,15 @@ export const ContactSplitBlock: Block = {
   slug: 'contactSplit',
   fields: [
     {
+      name: 'id',
+      type: 'text',
+      label: 'Section ID',
+      admin: {
+        description: 'Set a unique anchor for this section (e.g. "contact") for hash navigation.',
+        placeholder: 'contact',
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,

@@ -10,8 +10,10 @@ export const FaqBlock: Block = {
     {
       name: 'id',
       type: 'text',
+      label: 'Section ID',
       admin: {
-        description: 'HTML id for anchor linking (e.g., "faq"). Used for /page#faq URLs.',
+        description: 'Set a unique anchor for this section (e.g. "faq") for hash navigation.',
+        placeholder: 'faq',
       },
     },
     {

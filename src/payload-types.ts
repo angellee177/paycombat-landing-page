@@ -388,6 +388,7 @@ export interface Page {
         blockType: 'accordionList';
       }
     | {
+        id?: string | null;
         title: string;
         id?: string | null;
         description?: string | null;
@@ -864,6 +865,7 @@ export interface PagesSelect<T extends boolean = true> {
         contactSplit?:
           | T
           | {
+              id?: T;
               title?: T;
               id?: T;
               description?: T;
