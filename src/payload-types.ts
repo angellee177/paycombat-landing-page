@@ -390,7 +390,6 @@ export interface Page {
     | {
         id?: string | null;
         title: string;
-        id?: string | null;
         description?: string | null;
         formTitle?: string | null;
         formFields?:
@@ -867,7 +866,6 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               id?: T;
               title?: T;
-              id?: T;
               description?: T;
               formTitle?: T;
               formFields?:
