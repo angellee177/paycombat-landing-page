@@ -8,6 +8,13 @@ export const FaqBlock: Block = {
   },
   fields: [
     {
+      name: 'id',
+      type: 'text',
+      admin: {
+        description: 'HTML id for anchor linking (e.g., "faq"). Used for /page#faq URLs.',
+      },
+    },
+    {
       name: 'headline',
       type: 'text',
       required: true,

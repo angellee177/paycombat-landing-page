@@ -4,6 +4,13 @@ export const AccordionListBlock: Block = {
   slug: 'accordionList',
   fields: [
     {
+      name: 'id',
+      type: 'text',
+      admin: {
+        description: 'HTML id for anchor linking (e.g., "accordion"). Used for /page#accordion URLs.',
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,

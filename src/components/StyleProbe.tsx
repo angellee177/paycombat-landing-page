@@ -13,26 +13,26 @@ export function StyleProbe() {
     const sectionBgColor = sectionBgEl ? window.getComputedStyle(sectionBgEl).backgroundColor : null
 
     // #region agent log
-    fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
-      body: JSON.stringify({
-        sessionId: '92e393',
-        runId: `run-${Date.now()}`,
-        hypothesisId: 'H6',
-        location: 'src/components/StyleProbe.tsx:9',
-        message: 'Client style probe',
-        data: {
-          bodyBackgroundColor: bodyStyles.backgroundColor,
-          bodyFontFamily: bodyStyles.fontFamily,
-          primaryTextColor,
-          sectionBgColor,
-          hasHowItWorksSection: Boolean(howItWorksSection),
-          howItWorksCardCount: stepCards.length,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
+    // fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+    //   body: JSON.stringify({
+    //     sessionId: '92e393',
+    //     runId: `run-${Date.now()}`,
+    //     hypothesisId: 'H6',
+    //     location: 'src/components/StyleProbe.tsx:9',
+    //     message: 'Client style probe',
+    //     data: {
+    //       bodyBackgroundColor: bodyStyles.backgroundColor,
+    //       bodyFontFamily: bodyStyles.fontFamily,
+    //       primaryTextColor,
+    //       sectionBgColor,
+    //       hasHowItWorksSection: Boolean(howItWorksSection),
+    //       howItWorksCardCount: stepCards.length,
+    //     },
+    //     timestamp: Date.now(),
+    //   }),
+    // }).catch(() => {})
     // #endregion
   }, [])
 

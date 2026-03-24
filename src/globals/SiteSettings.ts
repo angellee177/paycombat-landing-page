@@ -10,8 +10,7 @@ export const SiteSettings: GlobalConfig = {
       required: true,
       defaultValue: 'PayCombat',
       admin: {
-        description:
-          'Used as the header fallback (if no logo), image alt text, and in the footer.',
+        description: 'Used as the header fallback (if no logo), image alt text, and in the footer.',
       },
     },
     {
@@ -43,7 +42,8 @@ export const SiteSettings: GlobalConfig = {
           name: 'url',
           type: 'text',
           admin: {
-            description: 'Optional external/custom URL. If empty and page selected, uses /{page.slug}.',
+            description:
+              'Optional external/custom URL. If empty and page selected, uses /{page.slug}.',
           },
         },
         {
