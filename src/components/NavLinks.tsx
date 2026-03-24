@@ -31,9 +31,9 @@ export function NavLinks({ links }: NavLinksProps) {
         return (
           <Link
             key={`${link.href}-${index}`}
-            className={`font-medium transition-all duration-300 px-3 py-2 whitespace-nowrap text-sm lg:text-base rounded-md ${
+            className={`font-medium transition-all duration-300 px-3 py-2 whitespace-nowrap text-sm lg:text-base ${
               active
-                ? 'text-primary bg-primary/10 font-bold border-b-2 border-primary'
+                ? 'text-primary font-bold border-b-2 border-primary'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
             href={link.href}
