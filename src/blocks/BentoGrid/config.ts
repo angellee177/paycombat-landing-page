@@ -46,7 +46,7 @@ export const BentoGridBlock: Block = {
           type: 'upload',
           relationTo: 'media',
           admin: {
-            condition: (data) => data?.type === 'image',
+            condition: (_, siblingData) => siblingData?.type === 'image',
           },
         },
         {
@@ -54,7 +54,7 @@ export const BentoGridBlock: Block = {
           type: 'text',
           defaultValue: 'Gallery item',
           admin: {
-            condition: (data) => data?.type === 'image',
+            condition: (_, siblingData) => siblingData?.type === 'image',
           },
         },
         // Text card fields
@@ -62,7 +62,7 @@ export const BentoGridBlock: Block = {
           name: 'label',
           type: 'text',
           admin: {
-            condition: (data) => data?.type === 'text-solid' || data?.type === 'text-outline',
+            condition: (_, siblingData) => siblingData?.type === 'text-solid' || siblingData?.type === 'text-outline',
           },
         },
         {
@@ -76,7 +76,7 @@ export const BentoGridBlock: Block = {
             { label: 'Surface', value: 'surface' },
           ],
           admin: {
-            condition: (data) => data?.type === 'text-solid',
+            condition: (_, siblingData) => siblingData?.type === 'text-solid',
           },
         },
       ],

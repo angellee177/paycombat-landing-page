@@ -481,18 +481,29 @@ export interface Page {
       }
     | {
         layout: 'image-right' | 'image-left';
+        layoutGrid: '1' | '2' | '3' | '4';
         headline: string;
         description?: string | null;
         contentType: 'text' | 'list';
         listItems?:
           | {
-              text: string;
+              title: string;
+              description: string;
               icon?: string | null;
               id?: string | null;
             }[]
           | null;
-        image: number | Media;
-        imageAlt?: string | null;
+        images?:
+          | {
+              type: 'image' | 'text-solid' | 'text-outline';
+              size: 'square' | 'tall' | 'wide' | 'large';
+              image?: (number | null) | Media;
+              imageAlt?: string | null;
+              label?: string | null;
+              backgroundColor?: ('primary' | 'secondary' | 'tertiary' | 'surface') | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'splitContent';
@@ -933,18 +944,29 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               layout?: T;
+              layoutGrid?: T;
               headline?: T;
               description?: T;
               contentType?: T;
               listItems?:
                 | T
                 | {
-                    text?: T;
+                    title?: T;
+                    description?: T;
                     icon?: T;
                     id?: T;
                   };
-              image?: T;
-              imageAlt?: T;
+              images?:
+                | T
+                | {
+                    type?: T;
+                    size?: T;
+                    image?: T;
+                    imageAlt?: T;
+                    label?: T;
+                    backgroundColor?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

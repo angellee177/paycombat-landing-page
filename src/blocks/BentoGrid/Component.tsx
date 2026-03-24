@@ -107,11 +107,11 @@ export function BentoGridComponent({
               return (
                 <div
                   key={itemKey}
-                  className={`${sizeClass} rounded-2xl p-6 md:p-8 flex items-end justify-start ${cardClass} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+                  className={`${sizeClass} rounded-2xl p-6 md:p-8 flex items-center justify-center ${cardClass} shadow-lg hover:shadow-xl transition-shadow duration-300`}
                 >
-                  <span className={`text-xl md:text-2xl font-bold leading-tight ${
+                  <span className={`text-2xl md:text-3xl font-extrabold leading-tight text-center ${
                     item.size === 'tall' || item.size === 'large'
-                      ? 'text-3xl md:text-4xl'
+                      ? 'text-4xl md:text-5xl'
                       : ''
                   }`}>
                     {item.label || 'Label'}
