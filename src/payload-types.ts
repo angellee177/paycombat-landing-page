@@ -91,9 +91,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
+    'contact-us-settings': ContactUsSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'contact-us-settings': ContactUsSettingsSelect<false> | ContactUsSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -337,6 +339,7 @@ export interface Page {
         blockType: 'featureGrid';
       }
     | {
+        id?: string | null;
         title: string;
         description?: string | null;
         /**
@@ -381,13 +384,13 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
-        id?: string | null;
         blockName?: string | null;
         blockType: 'accordionList';
       }
     | {
         id?: string | null;
         title: string;
+        id?: string | null;
         description?: string | null;
         formTitle?: string | null;
         formFields?:
@@ -830,6 +833,7 @@ export interface PagesSelect<T extends boolean = true> {
         accordionList?:
           | T
           | {
+              id?: T;
               title?: T;
               description?: T;
               showSearch?: T;
@@ -856,7 +860,6 @@ export interface PagesSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
-              id?: T;
               blockName?: T;
             };
         contactSplit?:
@@ -864,6 +867,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               id?: T;
               title?: T;
+              id?: T;
               description?: T;
               formTitle?: T;
               formFields?:
@@ -1078,6 +1082,19 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-us-settings".
+ */
+export interface ContactUsSetting {
+  id: number;
+  /**
+   * All contact form submissions will be sent to this address.
+   */
+  contactFormRecipient: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1112,6 +1129,16 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-us-settings_select".
+ */
+export interface ContactUsSettingsSelect<T extends boolean = true> {
+  contactFormRecipient?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

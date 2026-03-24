@@ -19,6 +19,13 @@ export const ContactSplitBlock: Block = {
       defaultValue: 'Get in Touch',
     },
     {
+      name: 'id',
+      type: 'text',
+      admin: {
+        description: 'HTML id for anchor linking (e.g., "contact-us"). Used for /page#contact-us URLs.',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
     },
