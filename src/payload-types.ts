@@ -1049,15 +1049,6 @@ export interface SiteSetting {
   headerLogo?: (number | null) | Media;
   headerLinks?:
     | {
-        /**
-         * Configure contact form destination email.
-         */
-        contactUsSetting: {
-          /**
-           * All contact form submissions will be sent to this address.
-           */
-          contactFormRecipient: string;
-        };
         label: string;
         page?: (number | null) | Page;
         /**
@@ -1110,11 +1101,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   headerLinks?:
     | T
     | {
-        contactUsSetting?:
-          | T
-          | {
-              contactFormRecipient?: T;
-            };
         label?: T;
         page?: T;
         url?: T;
