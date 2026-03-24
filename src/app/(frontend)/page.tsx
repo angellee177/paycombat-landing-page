@@ -1,59 +1,83 @@
 import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
-import { fileURLToPath } from 'url'
 
+import { RenderBlocks } from '@/components/RenderBlocks'
 import config from '@/payload.config'
 import './styles.css'
 
 export default async function HomePage() {
+  const runId = `run-${Date.now()}`
   const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  await payload.auth({ headers })
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  const {
+    docs: [page],
+  } = await payload.find({
+    collection: 'pages',
+    where: {
+      slug: { equals: 'landing-page' },
+    },
+  })
 
+  // #region agent log
+  fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+    body: JSON.stringify({
+      sessionId: '92e393',
+      runId,
+      hypothesisId: 'H1',
+      location: 'src/app/(frontend)/page.tsx:27',
+      message: 'Fetched landing page',
+      data: {
+        hasPage: Boolean(page),
+        title: page?.title ?? null,
+        layoutLength: Array.isArray(page?.layout) ? page.layout.length : 0,
+        blockTypes: Array.isArray(page?.layout) ? page.layout.map((b: { blockType?: string }) => b?.blockType ?? null) : [],
+      },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {})
+  // #endregion
+
+  if (!page) {
+    // #region agent log
+    fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+      body: JSON.stringify({
+        sessionId: '92e393',
+        runId,
+        hypothesisId: 'H2',
+        location: 'src/app/(frontend)/page.tsx:47',
+        message: 'Page not found branch hit',
+        data: { slug: 'landing-page' },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion
+    return <div>Page not found</div>
+  }
+
+  // #region agent log
+  fetch('http://127.0.0.1:7272/ingest/b6180842-bdf5-43f3-9eb9-1d3130ec3a35', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '92e393' },
+    body: JSON.stringify({
+      sessionId: '92e393',
+      runId,
+      hypothesisId: 'H4',
+      location: 'src/app/(frontend)/page.tsx:73',
+      message: 'Rendering blocks markup',
+      data: { returnShape: 'render-blocks', layoutLength: Array.isArray(page.layout) ? page.layout.length : 0 },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {})
+  // #endregion
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    <RenderBlocks blocks={page.layout} />
   )
 }

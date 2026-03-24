@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,18 +79,26 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
+  widgets: {
+    collections: CollectionsWidget;
+  };
   user: User;
   jobs: {
     tasks: unknown;
@@ -119,7 +128,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,7 +153,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -160,10 +169,360 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  layout: (
+    | {
+        layout?: ('split' | 'centered' | 'text-only' | 'media-left') | null;
+        eyebrow?: {
+          text?: string | null;
+          icon?: string | null;
+          filled?: boolean | null;
+        };
+        headline: {
+          prefix: string;
+          highlight?: string | null;
+          suffix?: string | null;
+        };
+        description?: string | null;
+        actions?:
+          | {
+              label: string;
+              page?: (number | null) | Page;
+              url?: string | null;
+              variant?: ('primary' | 'secondary' | 'ghost') | null;
+              id?: string | null;
+            }[]
+          | null;
+        media?: {
+          image?: (number | null) | Media;
+          altOverride?: string | null;
+          showDecor?: boolean | null;
+        };
+        spacing?: {
+          top?: ('sm' | 'md' | 'lg') | null;
+          bottom?: ('sm' | 'md' | 'lg') | null;
+        };
+        eyebrowLegacy?: string | null;
+        title?: string | null;
+        highlightText?: string | null;
+        primaryCTA?: {
+          label?: string | null;
+          url?: string | null;
+        };
+        secondaryCTA?: {
+          label?: string | null;
+          url?: string | null;
+        };
+        image?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        title?: string | null;
+        brands?:
+          | {
+              name: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'trustedBy';
+      }
+    | {
+        headline: string;
+        description?: string | null;
+        cards?:
+          | {
+              title: string;
+              description: string;
+              /**
+               * Material Symbols icon name, e.g. speed, shield_lock, api, public
+               */
+              icon?: string | null;
+              variant?: ('default' | 'emphasis' | 'secondary') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'features';
+      }
+    | {
+        headline: string;
+        description?: string | null;
+        steps?:
+          | {
+              title: string;
+              description: string;
+              /**
+               * Optional short label, e.g. Step 01
+               */
+              label?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'howItWorks';
+      }
+    | {
+        headline: string;
+        /**
+         * Optional intro shown under the headline.
+         */
+        description?: string | null;
+        items?:
+          | {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'faq';
+      }
+    | {
+        title: string;
+        description: string;
+        button: {
+          label: string;
+          url: string;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'ctaBanner';
+      }
+    | {
+        title: string;
+        description?: string | null;
+        alignment?: ('left' | 'center') | null;
+        size?: ('sm' | 'md' | 'lg') | null;
+        showDivider?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'sectionHeader';
+      }
+    | {
+        height: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'spacer';
+      }
+    | {
+        title: string;
+        description?: string | null;
+        columns?: ('2' | '3' | '4') | null;
+        features?:
+          | {
+              title: string;
+              description: string;
+              /**
+               * Material Symbols icon name
+               */
+              icon?: string | null;
+              backgroundColor?: ('primary' | 'tertiary' | 'secondary' | 'surface') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'featureGrid';
+      }
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * Display search bar above the list
+         */
+        showSearch?: boolean | null;
+        searchPlaceholder?: string | null;
+        groups?:
+          | {
+              /**
+               * Category name (e.g., Engineering, Product, Support)
+               */
+              label: string;
+              items?:
+                | {
+                    title: string;
+                    /**
+                     * Secondary text or description
+                     */
+                    subtitle?: string | null;
+                    tags?:
+                      | {
+                          /**
+                           * e.g., "Remote", "Full-time", "New York"
+                           */
+                          label: string;
+                          /**
+                           * Material Symbols icon name
+                           */
+                          icon?: string | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    /**
+                     * Link to details page
+                     */
+                    url?: string | null;
+                    actionLabel?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'accordionList';
+      }
+    | {
+        title: string;
+        description?: string | null;
+        formTitle?: string | null;
+        formFields?:
+          | {
+              label: string;
+              /**
+               * Form field name attribute
+               */
+              name: string;
+              type: 'text' | 'email' | 'textarea' | 'tel';
+              placeholder?: string | null;
+              required?: boolean | null;
+              /**
+               * Span full width (use for last field or textarea)
+               */
+              fullWidth?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        submitButtonLabel?: string | null;
+        infoCards?:
+          | {
+              /**
+               * Material Symbols icon name
+               */
+              icon: string;
+              label: string;
+              /**
+               * Can include line breaks or multiple lines (e.g., phone numbers)
+               */
+              content: string;
+              id?: string | null;
+            }[]
+          | null;
+        highlightCard?: {
+          /**
+           * Show a highlighted info card (e.g., Business Hours)
+           */
+          enabled?: boolean | null;
+          title?: string | null;
+          /**
+           * Material Symbols icon name
+           */
+          icon?: string | null;
+          items?:
+            | {
+                label: string;
+                value: string;
+                isClosed?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'contactSplit';
+      }
+    | {
+        title?: string | null;
+        description?: string | null;
+        items?:
+          | {
+              type: 'image' | 'text-solid' | 'text-outline';
+              size: 'square' | 'tall' | 'wide' | 'large';
+              image?: (number | null) | Media;
+              imageAlt?: string | null;
+              label?: string | null;
+              backgroundColor?: ('primary' | 'secondary' | 'tertiary' | 'surface') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'bentoGrid';
+      }
+    | {
+        title?: string | null;
+        description?: string | null;
+        columns?: ('2' | '3' | '4') | null;
+        profiles?:
+          | {
+              name: string;
+              role: string;
+              image: number | Media;
+              bio?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'profileGrid';
+      }
+    | {
+        layout: 'image-right' | 'image-left';
+        headline: string;
+        description?: string | null;
+        contentType: 'text' | 'list';
+        listItems?:
+          | {
+              text: string;
+              icon?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        image: number | Media;
+        imageAlt?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'splitContent';
+      }
+    | {
+        title: string;
+        description?: string | null;
+        variant?: ('primary' | 'secondary' | 'gradient') | null;
+        buttons?:
+          | {
+              label: string;
+              url: string;
+              style?: ('solid' | 'outline') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'actionBanner';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -180,20 +539,24 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -203,10 +566,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -226,7 +589,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -274,6 +637,340 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              layout?: T;
+              eyebrow?:
+                | T
+                | {
+                    text?: T;
+                    icon?: T;
+                    filled?: T;
+                  };
+              headline?:
+                | T
+                | {
+                    prefix?: T;
+                    highlight?: T;
+                    suffix?: T;
+                  };
+              description?: T;
+              actions?:
+                | T
+                | {
+                    label?: T;
+                    page?: T;
+                    url?: T;
+                    variant?: T;
+                    id?: T;
+                  };
+              media?:
+                | T
+                | {
+                    image?: T;
+                    altOverride?: T;
+                    showDecor?: T;
+                  };
+              spacing?:
+                | T
+                | {
+                    top?: T;
+                    bottom?: T;
+                  };
+              eyebrowLegacy?: T;
+              title?: T;
+              highlightText?: T;
+              primaryCTA?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              secondaryCTA?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              image?: T;
+              id?: T;
+              blockName?: T;
+            };
+        trustedBy?:
+          | T
+          | {
+              title?: T;
+              brands?:
+                | T
+                | {
+                    name?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              headline?: T;
+              description?: T;
+              cards?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    icon?: T;
+                    variant?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        howItWorks?:
+          | T
+          | {
+              headline?: T;
+              description?: T;
+              steps?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              headline?: T;
+              description?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        ctaBanner?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        sectionHeader?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              alignment?: T;
+              size?: T;
+              showDivider?: T;
+              id?: T;
+              blockName?: T;
+            };
+        spacer?:
+          | T
+          | {
+              height?: T;
+              id?: T;
+              blockName?: T;
+            };
+        featureGrid?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              columns?: T;
+              features?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    icon?: T;
+                    backgroundColor?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        accordionList?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              showSearch?: T;
+              searchPlaceholder?: T;
+              groups?:
+                | T
+                | {
+                    label?: T;
+                    items?:
+                      | T
+                      | {
+                          title?: T;
+                          subtitle?: T;
+                          tags?:
+                            | T
+                            | {
+                                label?: T;
+                                icon?: T;
+                                id?: T;
+                              };
+                          url?: T;
+                          actionLabel?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        contactSplit?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              formTitle?: T;
+              formFields?:
+                | T
+                | {
+                    label?: T;
+                    name?: T;
+                    type?: T;
+                    placeholder?: T;
+                    required?: T;
+                    fullWidth?: T;
+                    id?: T;
+                  };
+              submitButtonLabel?: T;
+              infoCards?:
+                | T
+                | {
+                    icon?: T;
+                    label?: T;
+                    content?: T;
+                    id?: T;
+                  };
+              highlightCard?:
+                | T
+                | {
+                    enabled?: T;
+                    title?: T;
+                    icon?: T;
+                    items?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          isClosed?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        bentoGrid?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              items?:
+                | T
+                | {
+                    type?: T;
+                    size?: T;
+                    image?: T;
+                    imageAlt?: T;
+                    label?: T;
+                    backgroundColor?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        profileGrid?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              columns?: T;
+              profiles?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    image?: T;
+                    bio?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        splitContent?:
+          | T
+          | {
+              layout?: T;
+              headline?: T;
+              description?: T;
+              contentType?: T;
+              listItems?:
+                | T
+                | {
+                    text?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              image?: T;
+              imageAlt?: T;
+              id?: T;
+              blockName?: T;
+            };
+        actionBanner?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              variant?: T;
+              buttons?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -311,6 +1008,101 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Used as the header fallback (if no logo), image alt text, and in the footer.
+   */
+  brandName: string;
+  /**
+   * Horizontal logo for the header. Prefer SVG or transparent PNG under ~200 KB. Common sizes: 250×150, 350×75, or 400×100 px; on mobile aim ~160×40 display — upload 2×–3× for retina.
+   */
+  headerLogo?: (number | null) | Media;
+  headerLinks?:
+    | {
+        label: string;
+        page?: (number | null) | Page;
+        /**
+         * Optional external/custom URL. If empty and page selected, uses /{page.slug}.
+         */
+        url?: string | null;
+        highlight?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  headerPrimaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  headerSecondaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  footerDescription?: string | null;
+  footerLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  brandName?: T;
+  headerLogo?: T;
+  headerLinks?:
+    | T
+    | {
+        label?: T;
+        page?: T;
+        url?: T;
+        highlight?: T;
+        id?: T;
+      };
+  headerPrimaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  headerSecondaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  footerDescription?: T;
+  footerLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

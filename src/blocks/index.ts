@@ -1,0 +1,1 @@
+export { pageBlocks, blockComponentMap } from './registry'

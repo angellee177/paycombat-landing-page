@@ -48,3 +48,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+LLM_HANDOFF.md
+OPEN_ISSUES.md
+SESSION_TASK.md
