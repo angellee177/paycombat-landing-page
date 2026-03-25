@@ -21,6 +21,7 @@ export const FeatureGridBlock: Block = {
         { label: '2 Columns', value: '2' },
         { label: '3 Columns', value: '3' },
         { label: '4 Columns', value: '4' },
+        { label: '6 Columns', value: '6' },
       ],
     },
     {
@@ -43,7 +44,8 @@ export const FeatureGridBlock: Block = {
           type: 'text',
           defaultValue: 'star',
           admin: {
-            description: 'Material Symbols icon name',
+            description:
+              'Material Symbols icon name, check https://fonts.google.com/icons for options',
           },
         },
         {

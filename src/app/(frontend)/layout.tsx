@@ -27,8 +27,8 @@ type SiteSettingsData = {
 }
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'Paycombat Landing page using Payload in a Next.js app.',
+  title: 'Paycombat Landing Page',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

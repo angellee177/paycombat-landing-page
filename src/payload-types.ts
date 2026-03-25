@@ -293,11 +293,20 @@ export interface Page {
         blockType: 'faq';
       }
     | {
+        background: 'primary' | 'black';
         title: string;
+        /**
+         * Optional: Highlight part of the title with a color.
+         */
+        highlight?: {
+          text?: string | null;
+          color?: ('white' | 'purple') | null;
+        };
         description: string;
         button: {
           label: string;
           url: string;
+          style?: ('primary' | 'blackWhite') | null;
         };
         id?: string | null;
         blockName?: string | null;
@@ -322,13 +331,13 @@ export interface Page {
     | {
         title: string;
         description?: string | null;
-        columns?: ('2' | '3' | '4') | null;
+        columns?: ('2' | '3' | '4' | '6') | null;
         features?:
           | {
               title: string;
               description: string;
               /**
-               * Material Symbols icon name
+               * Material Symbols icon name, check https://fonts.google.com/icons for options
                */
               icon?: string | null;
               backgroundColor?: ('primary' | 'tertiary' | 'secondary' | 'surface') | null;
@@ -526,6 +535,58 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'actionBanner';
+      }
+    | {
+        title: string;
+        subtitle: string;
+        steps: {
+          number: string;
+          title: string;
+          description: string;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'processTimeline';
+      }
+    | {
+        title: string;
+        /**
+         * Small label above the title, e.g. EXPERTISE CATEGORIES
+         */
+        subtitle?: string | null;
+        items: {
+          /**
+           * Material Symbols icon name (e.g. account_balance_wallet), check https://fonts.google.com/icons for options
+           */
+          icon?: string | null;
+          /**
+           * Material Symbols icon name for watermark (e.g. account_balance_wallet), check https://fonts.google.com/icons for options
+           */
+          watermark?: string | null;
+          title: string;
+          features: {
+            feature: string;
+            id?: string | null;
+          }[];
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'categoryCard';
+      }
+    | {
+        title?: string | null;
+        testimonials: {
+          quote: string;
+          name: string;
+          company: string;
+          initials?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonialGrid';
       }
   )[];
   updatedAt: string;
@@ -803,13 +864,21 @@ export interface PagesSelect<T extends boolean = true> {
         ctaBanner?:
           | T
           | {
+              background?: T;
               title?: T;
+              highlight?:
+                | T
+                | {
+                    text?: T;
+                    color?: T;
+                  };
               description?: T;
               button?:
                 | T
                 | {
                     label?: T;
                     url?: T;
+                    style?: T;
                   };
               id?: T;
               blockName?: T;
@@ -1005,6 +1074,60 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     url?: T;
                     style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        processTimeline?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              steps?:
+                | T
+                | {
+                    number?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        categoryCard?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              items?:
+                | T
+                | {
+                    icon?: T;
+                    watermark?: T;
+                    title?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        testimonialGrid?:
+          | T
+          | {
+              title?: T;
+              testimonials?:
+                | T
+                | {
+                    quote?: T;
+                    name?: T;
+                    company?: T;
+                    initials?: T;
                     id?: T;
                   };
               id?: T;
