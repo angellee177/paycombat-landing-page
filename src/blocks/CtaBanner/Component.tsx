@@ -16,7 +16,7 @@ type CtaBannerProps = {
   }
 }
 
-export function CtaBannerSection({
+export function CtaBannerComponent({
   background = 'primary',
   title,
   highlight,

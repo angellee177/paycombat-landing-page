@@ -8,7 +8,7 @@ import { TrustedByBlock } from './TrustedBy/config'
 import { FeaturesBlock } from './Features/config'
 import { HowItWorksBlock } from './HowItWorks/config'
 import { CtaBannerBlock } from './CtaBanner/config'
-import { ProcessTimeline } from './ProcessTimeline/config'
+import { ProcessTimelineBlock } from './ProcessTimeline/config'
 import { FaqBlock } from './Faq/config'
 import { SectionHeaderBlock } from './SectionHeader/config'
 import { SpacerBlock } from './Spacer/config'
@@ -19,14 +19,15 @@ import { ActionBannerBlock } from './ActionBanner/config'
 import { AccordionListBlock } from './AccordionList/config'
 import { ContactSplitBlock } from './ContactSplit/config'
 import { BentoGridBlock } from './BentoGrid/config'
+import { TestimonialGridBlock } from './TestimonialGrid/config'
 
-import { HeroSection } from './Hero/Component'
-import { TrustedBySection } from './TrustedBy/Component'
-import { FeaturesSection } from './Features/Component'
-import { HowItWorksSection } from './HowItWorks/Component'
-import { CtaBannerSection } from './CtaBanner/Component'
-import { ProcessTimelineBlockAdapter } from './ProcessTimeline/BlockAdapter'
-import { FaqSection } from './Faq/Component'
+import { HeroComponent } from './Hero/Component'
+import { TrustedByComponent as TrustedByComponent } from './TrustedBy/Component'
+import { FeaturesComponent } from './Features/Component'
+import { HowItWorksComponent } from './HowItWorks/Component'
+import { CtaBannerComponent } from './CtaBanner/Component'
+import { ProcessTimelineComponentAdapter } from './ProcessTimeline/BlockAdapter'
+import { FaqComponent } from './Faq/Component'
 import { SectionHeaderComponent } from './SectionHeader/Component'
 import { SpacerComponent } from './Spacer/Component'
 import { FeatureGridComponent } from './FeatureGrid/Component'
@@ -36,6 +37,7 @@ import { ActionBannerComponent } from './ActionBanner/Component'
 import { AccordionListComponent } from './AccordionList/Component'
 import { ContactSplitComponent } from './ContactSplit/Component'
 import { BentoGridComponent } from './BentoGrid/Component'
+import { TestimonialGridComponent } from './TestimonialGrid/Component'
 
 export const pageBlocks: Block[] = [
   HeroBlock,
@@ -53,17 +55,18 @@ export const pageBlocks: Block[] = [
   ProfileGridBlock,
   SplitContentBlock,
   ActionBannerBlock,
-  ProcessTimeline,
+  ProcessTimelineBlock,
   CategoryCardBlock,
+  TestimonialGridBlock,
 ]
 
 export const blockComponentMap: Record<string, ComponentType<Record<string, unknown>>> = {
-  hero: HeroSection,
-  trustedBy: TrustedBySection,
-  features: FeaturesSection,
-  howItWorks: HowItWorksSection,
-  faq: FaqSection,
-  ctaBanner: CtaBannerSection as ComponentType<Record<string, unknown>>,
+  hero: HeroComponent,
+  trustedBy: TrustedByComponent,
+  features: FeaturesComponent,
+  howItWorks: HowItWorksComponent,
+  faq: FaqComponent,
+  ctaBanner: CtaBannerComponent as ComponentType<Record<string, unknown>>,
   sectionHeader: SectionHeaderComponent,
   spacer: SpacerComponent,
   featureGrid: FeatureGridComponent,
@@ -73,6 +76,7 @@ export const blockComponentMap: Record<string, ComponentType<Record<string, unkn
   accordionList: AccordionListComponent,
   contactSplit: ContactSplitComponent,
   bentoGrid: BentoGridComponent,
-  processTimeline: ProcessTimelineBlockAdapter,
+  processTimeline: ProcessTimelineComponentAdapter,
   categoryCard: CategoryCardComponent as ComponentType<Record<string, unknown>>,
+  testimonialGrid: TestimonialGridComponent as ComponentType<Record<string, unknown>>,
 }

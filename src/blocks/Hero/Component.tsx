@@ -60,10 +60,11 @@ type HeroAction = {
   variant?: 'primary' | 'secondary' | 'ghost' | null
 }
 
-export function HeroSection(props: HeroSectionProps) {
+export function HeroComponent(props: HeroSectionProps) {
   const eyebrowText = typeof props.eyebrow === 'string' ? props.eyebrow : props.eyebrow?.text || ''
-  const eyebrowIcon = typeof props.eyebrow === 'string' ? 'verified' : props.eyebrow?.icon || 'verified'
-  const eyebrowFilled = typeof props.eyebrow === 'string' ? true : props.eyebrow?.filled ?? true
+  const eyebrowIcon =
+    typeof props.eyebrow === 'string' ? 'verified' : props.eyebrow?.icon || 'verified'
+  const eyebrowFilled = typeof props.eyebrow === 'string' ? true : (props.eyebrow?.filled ?? true)
 
   const title = props.headline?.prefix || props.title || ''
   const highlight = props.headline?.highlight || props.highlightText || ''
@@ -92,9 +93,15 @@ export function HeroSection(props: HeroSectionProps) {
   const sectionPadding = hasHeroText ? `${topPadding} ${bottomPadding}` : 'py-8 md:py-10 lg:py-12'
 
   const fallbackActions: HeroAction[] = [
-    props.primaryCTA?.label ? { label: props.primaryCTA.label, url: props.primaryCTA.url, variant: 'primary' as const } : null,
+    props.primaryCTA?.label
+      ? { label: props.primaryCTA.label, url: props.primaryCTA.url, variant: 'primary' as const }
+      : null,
     props.secondaryCTA?.label
-      ? { label: props.secondaryCTA.label, url: props.secondaryCTA.url, variant: 'secondary' as const }
+      ? {
+          label: props.secondaryCTA.label,
+          url: props.secondaryCTA.url,
+          variant: 'secondary' as const,
+        }
       : null,
   ].filter(Boolean) as HeroAction[]
 
@@ -108,15 +115,17 @@ export function HeroSection(props: HeroSectionProps) {
       'bg-primary text-on-primary px-8 py-4 rounded-full font-bold text-lg hover:scale-95 transition-transform shadow-xl',
     secondary:
       'bg-surface-container-lowest text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-surface-container-low transition-colors shadow-sm ring-1 ring-outline-variant/20',
-    ghost: 'text-slate-700 px-6 py-3 rounded-full font-semibold hover:bg-slate-100 transition-colors',
+    ghost:
+      'text-slate-700 px-6 py-3 rounded-full font-semibold hover:bg-slate-100 transition-colors',
   }
 
-  const containerClassByLayout: Record<'split' | 'centered' | 'text-only' | 'media-left', string> = {
-    split: 'max-w-7xl mx-auto flex flex-col lg:flex-row items-start gap-16',
-    centered: 'max-w-5xl mx-auto flex flex-col items-center text-center gap-8',
-    'text-only': 'max-w-5xl mx-auto',
-    'media-left': 'max-w-7xl mx-auto flex flex-col lg:flex-row-reverse items-start gap-16',
-  }
+  const containerClassByLayout: Record<'split' | 'centered' | 'text-only' | 'media-left', string> =
+    {
+      split: 'max-w-7xl mx-auto flex flex-col lg:flex-row items-start gap-16',
+      centered: 'max-w-5xl mx-auto flex flex-col items-center text-center gap-8',
+      'text-only': 'max-w-5xl mx-auto',
+      'media-left': 'max-w-7xl mx-auto flex flex-col lg:flex-row-reverse items-start gap-16',
+    }
   const textClassByLayout: Record<'split' | 'centered' | 'text-only' | 'media-left', string> = {
     split: 'lg:w-1/2 space-y-8',
     centered: 'space-y-8',
@@ -153,7 +162,9 @@ export function HeroSection(props: HeroSectionProps) {
           {eyebrowText ? (
             <div
               className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase ${
-                eyebrowFilled ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant'
+                eyebrowFilled
+                  ? 'bg-secondary-container text-on-secondary-container'
+                  : 'text-on-surface-variant'
               }`}
             >
               <span className="material-symbols-outlined text-sm">{eyebrowIcon}</span>
@@ -180,7 +191,11 @@ export function HeroSection(props: HeroSectionProps) {
               if (!resolved) return null
               const variant = action.variant || 'primary'
               return (
-                <Link key={`${resolved.href}-${index}`} href={resolved.href} className={actionClass[variant]}>
+                <Link
+                  key={`${resolved.href}-${index}`}
+                  href={resolved.href}
+                  className={actionClass[variant]}
+                >
                   {resolved.label}
                 </Link>
               )

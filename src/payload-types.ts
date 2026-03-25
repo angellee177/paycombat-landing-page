@@ -537,6 +537,8 @@ export interface Page {
         blockType: 'actionBanner';
       }
     | {
+        title: string;
+        subtitle: string;
         steps: {
           number: string;
           title: string;
@@ -572,6 +574,19 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'categoryCard';
+      }
+    | {
+        title?: string | null;
+        testimonials: {
+          quote: string;
+          name: string;
+          company: string;
+          initials?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonialGrid';
       }
   )[];
   updatedAt: string;
@@ -1067,6 +1082,8 @@ export interface PagesSelect<T extends boolean = true> {
         processTimeline?:
           | T
           | {
+              title?: T;
+              subtitle?: T;
               steps?:
                 | T
                 | {
@@ -1095,6 +1112,22 @@ export interface PagesSelect<T extends boolean = true> {
                           feature?: T;
                           id?: T;
                         };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        testimonialGrid?:
+          | T
+          | {
+              title?: T;
+              testimonials?:
+                | T
+                | {
+                    quote?: T;
+                    name?: T;
+                    company?: T;
+                    initials?: T;
                     id?: T;
                   };
               id?: T;

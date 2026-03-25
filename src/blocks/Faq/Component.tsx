@@ -13,7 +13,7 @@ type FaqSectionProps = {
   items?: FaqItem[] | null
 }
 
-export function FaqSection({ id, headline, description, items }: FaqSectionProps) {
+export function FaqComponent({ id, headline, description, items }: FaqSectionProps) {
   const safeItems = (items || []).filter((item) => item.question?.trim())
   if (!headline && safeItems.length === 0) return null
 

@@ -33,7 +33,7 @@ const iconVariantClass: Record<'default' | 'emphasis' | 'secondary', string> = {
     'bg-surface-container-lowest text-on-secondary-container transition-all duration-300 group-hover:bg-[#2E47D1] group-hover:text-white',
 }
 
-export function FeaturesSection({ headline, description, cards }: FeaturesProps) {
+export function FeaturesComponent({ headline, description, cards }: FeaturesProps) {
   if (!headline && !description && (!cards || cards.length === 0)) return null
 
   return (
