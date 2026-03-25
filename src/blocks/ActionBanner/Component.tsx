@@ -27,14 +27,20 @@ const variantClasses: Record<'primary' | 'secondary' | 'gradient', string> = {
 
 const buttonClasses: Record<'solid' | 'outline', Record<string, string>> = {
   solid: {
-    primary: 'bg-surface-container-lowest text-primary hover:scale-105',
-    secondary: 'bg-tertiary-fixed text-tertiary hover:scale-105',
-    gradient: 'bg-surface-container-lowest text-primary hover:scale-105',
+    primary:
+      'bg-surface-container-lowest text-primary hover:bg-[#bbc3ff] hover:text-primary hover:scale-105 transition-all duration-300',
+    secondary:
+      'bg-tertiary-fixed text-tertiary hover:bg-[#bbc3ff] hover:text-black hover:scale-105 transition-all duration-300',
+    gradient:
+      'bg-surface-container-lowest text-primary hover:bg-[#bbc3ff] hover:text-primary hover:scale-105 transition-all duration-300',
   },
   outline: {
-    primary: 'border-2 border-surface-container-lowest text-surface-container-lowest hover:bg-surface-container-lowest/10',
-    secondary: 'border-2 border-on-surface text-on-surface hover:bg-on-surface/10',
-    gradient: 'border-2 border-surface-container-lowest text-surface-container-lowest hover:bg-surface-container-lowest/10',
+    primary:
+      'border-2 border-surface-container-lowest text-surface-container-lowest hover:bg-[#bbc3ff]/10 hover:text-white hover:scale-105 transition-all duration-300',
+    secondary:
+      'border-2 border-on-surface text-on-surface hover:bg-[#bbc3ff]/10 hover:text-tertiary hover:scale-105 transition-all duration-300',
+    gradient:
+      'border-2 border-surface-container-lowest text-surface-container-lowest hover:bg-[#bbc3ff]/10 hover:text-white hover:scale-105 transition-all duration-300',
   },
 }
 
@@ -51,7 +57,9 @@ export function ActionBannerComponent({
   return (
     <section className="py-20 md:py-28 px-8">
       <div className="max-w-7xl mx-auto">
-        <div className={`${variantClasses[bannerVariant]} rounded-[2.5rem] p-12 md:p-20 relative z-10`}>
+        <div
+          className={`${variantClasses[bannerVariant]} rounded-[2.5rem] p-12 md:p-20 relative z-10`}
+        >
           <div className="relative z-20 space-y-8 text-center">
             {title ? (
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mx-auto">
@@ -73,7 +81,11 @@ export function ActionBannerComponent({
                   const buttonClass = `${buttonClasses[buttonStyle][bannerVariant]} px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 inline-block`
 
                   return (
-                    <Link key={button.id ?? `button-${index}`} href={buttonUrl} className={buttonClass}>
+                    <Link
+                      key={button.id ?? `button-${index}`}
+                      href={buttonUrl}
+                      className={buttonClass}
+                    >
                       {button.label || 'Click Here'}
                     </Link>
                   )
