@@ -28,11 +28,8 @@ export function TestimonialGridComponent({ title, testimonials }: TestimonialGri
             <div
               key={t.name + t.company + idx}
               className={[
-                'flex flex-col h-full bg-white rounded-2xl p-10 transition-all duration-300',
-                'border',
-                idx === 1
-                  ? 'border-[#2E47D1] shadow-[0_8px_32px_0_rgba(46,71,209,0.10)]'
-                  : 'border-black/10 shadow-[0_2px_12px_0_rgba(16,30,54,0.04)]',
+                'flex flex-col h-full bg-white rounded-2xl p-10 transition-all duration-300 border group cursor-pointer',
+                'border-black/10 shadow-[0_2px_12px_0_rgba(16,30,54,0.04)] hover:shadow-[0_8px_32px_0_rgba(46,71,209,0.18)] hover:border-[#2E47D1]/60',
               ].join(' ')}
               style={{ minHeight: 320 }}
             >
