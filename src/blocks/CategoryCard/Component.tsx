@@ -23,7 +23,9 @@ export function CategoryCardBlock({ title, subtitle, items }: CategoryCardBlockP
         {/* Subtitle */}
         {subtitle && (
           <div className="text-center mb-2">
-            <span className="text-xs font-black uppercase tracking-[0.4em] text-primary mb-4 block font-sans"></span>
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-primary mb-4 block font-sans">
+              {subtitle}
+            </span>
           </div>
         )}
         {/* Title */}
