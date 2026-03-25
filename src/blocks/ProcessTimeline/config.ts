@@ -1,8 +1,28 @@
 import type { Block } from 'payload'
 
-export const ProcessTimeline: Block = {
+export const ProcessTimelineBlock: Block = {
   slug: 'processTimeline',
   fields: [
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Section Title',
+      required: true,
+      defaultValue: 'Our Process',
+      admin: {
+        width: '50%',
+      },
+    },
+    {
+      name: 'subtitle',
+      type: 'text',
+      label: 'Section Subtitle',
+      required: true,
+      defaultValue: 'The Precision Methodology',
+      admin: {
+        width: '50%',
+      },
+    },
     {
       name: 'steps',
       type: 'array',

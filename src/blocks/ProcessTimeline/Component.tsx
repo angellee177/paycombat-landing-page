@@ -1,6 +1,8 @@
 import React from 'react'
 
 export type ProcessTimelineProps = {
+  title?: string
+  subtitle?: string
   steps: Array<{
     number: string
     title: string
@@ -8,7 +10,7 @@ export type ProcessTimelineProps = {
   }>
 }
 
-export function ProcessTimelineComponent({ steps }: ProcessTimelineProps) {
+export function ProcessTimelineComponent({ title, subtitle, steps }: ProcessTimelineProps) {
   if (!steps || steps.length < 2) return null
 
   return (
@@ -16,10 +18,10 @@ export function ProcessTimelineComponent({ steps }: ProcessTimelineProps) {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <span className="text-xs font-black uppercase tracking-[0.8em] text-primary mb-4 block font-sans">
-            OUR PROCESS
+            {subtitle || 'OUR PROCESS'}
           </span>
           <h2 className="text-5xl md:text-6xl font-['Manrope'] font-bold tracking-[-0.04em] leading-[1.05] text-on-surface">
-            The Precision Methodology
+            {title || 'The Precision Methodology'}
           </h2>
         </div>
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-20 md:gap-0 relative">
