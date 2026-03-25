@@ -1,3 +1,5 @@
+import { CategoryCardBlock } from './CategoryCard/config'
+import { CategoryCardBlock as CategoryCardComponent } from './CategoryCard/Component'
 import type { Block } from 'payload'
 import type { ComponentType } from 'react'
 
@@ -6,6 +8,7 @@ import { TrustedByBlock } from './TrustedBy/config'
 import { FeaturesBlock } from './Features/config'
 import { HowItWorksBlock } from './HowItWorks/config'
 import { CtaBannerBlock } from './CtaBanner/config'
+import { ProcessTimeline } from './ProcessTimeline/config'
 import { FaqBlock } from './Faq/config'
 import { SectionHeaderBlock } from './SectionHeader/config'
 import { SpacerBlock } from './Spacer/config'
@@ -22,6 +25,7 @@ import { TrustedBySection } from './TrustedBy/Component'
 import { FeaturesSection } from './Features/Component'
 import { HowItWorksSection } from './HowItWorks/Component'
 import { CtaBannerSection } from './CtaBanner/Component'
+import { ProcessTimelineBlockAdapter } from './ProcessTimeline/BlockAdapter'
 import { FaqSection } from './Faq/Component'
 import { SectionHeaderComponent } from './SectionHeader/Component'
 import { SpacerComponent } from './Spacer/Component'
@@ -49,6 +53,8 @@ export const pageBlocks: Block[] = [
   ProfileGridBlock,
   SplitContentBlock,
   ActionBannerBlock,
+  ProcessTimeline,
+  CategoryCardBlock,
 ]
 
 export const blockComponentMap: Record<string, ComponentType<Record<string, unknown>>> = {
@@ -57,7 +63,7 @@ export const blockComponentMap: Record<string, ComponentType<Record<string, unkn
   features: FeaturesSection,
   howItWorks: HowItWorksSection,
   faq: FaqSection,
-  ctaBanner: CtaBannerSection,
+  ctaBanner: CtaBannerSection as ComponentType<Record<string, unknown>>,
   sectionHeader: SectionHeaderComponent,
   spacer: SpacerComponent,
   featureGrid: FeatureGridComponent,
@@ -67,4 +73,6 @@ export const blockComponentMap: Record<string, ComponentType<Record<string, unkn
   accordionList: AccordionListComponent,
   contactSplit: ContactSplitComponent,
   bentoGrid: BentoGridComponent,
+  processTimeline: ProcessTimelineBlockAdapter,
+  categoryCard: CategoryCardComponent as ComponentType<Record<string, unknown>>,
 }
