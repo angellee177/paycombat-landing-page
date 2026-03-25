@@ -44,7 +44,8 @@ export const FeatureGridBlock: Block = {
           type: 'text',
           defaultValue: 'star',
           admin: {
-            description: 'Material Symbols icon name',
+            description:
+              'Material Symbols icon name, check https://fonts.google.com/icons for options',
           },
         },
         {
