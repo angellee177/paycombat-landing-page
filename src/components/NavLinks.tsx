@@ -55,13 +55,7 @@ export function NavLinks({ links }: NavLinksProps) {
     <div className="hidden md:flex items-center gap-1 lg:gap-2">
       {links.map((link, index) => {
         const active = isActive(link.href)
-        // Debug logging for active state
-        console.log('NavLinks debug:', {
-          pathname,
-          linkHref: link.href,
-          active,
-          locationHash,
-        })
+
         return (
           <Link
             key={`${link.href}-${index}`}
