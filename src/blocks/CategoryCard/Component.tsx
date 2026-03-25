@@ -2,15 +2,17 @@ import React from 'react'
 import type { Media } from '@/payload-types'
 
 export type CategoryCardBlockProps = {
+  title?: string | null
+  subtitle?: string | null
   items: Array<{
-    icon?: string // Material Symbol name
-    watermark?: string // Material Symbol name
+    icon?: string | null
+    watermark?: string | null
     title: string
     features: Array<{ feature: string }>
   }>
 }
 
-export function CategoryCardBlock({ items }: CategoryCardBlockProps) {
+export function CategoryCardBlock({ title, subtitle, items }: CategoryCardBlockProps) {
   if (!items || items.length === 0) return null
   // Only show the first 4 items for a 2x2 grid
   const cards = items.slice(0, 4)
@@ -18,6 +20,20 @@ export function CategoryCardBlock({ items }: CategoryCardBlockProps) {
   return (
     <section className="py-24 px-8 bg-surface-container-low">
       <div className="max-w-7xl mx-auto">
+        {/* Subtitle */}
+        {subtitle && (
+          <div className="text-center mb-2">
+            <span className="text-xs font-black uppercase tracking-[0.5em] text-primary mb-4 block">
+              {subtitle}
+            </span>
+          </div>
+        )}
+        {/* Title */}
+        {title && (
+          <h2 className="text-4xl md:text-5xl font-headline font-extrabold tracking-tight text-center mb-12">
+            {title}
+          </h2>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {cards.map((item, idx) => (
             <div

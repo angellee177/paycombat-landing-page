@@ -4,6 +4,23 @@ export const CategoryCardBlock: Block = {
   slug: 'categoryCard',
   fields: [
     {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      required: true,
+      defaultValue: 'Specialized Knowledge Domains',
+    },
+    {
+      name: 'subtitle',
+      type: 'text',
+      label: 'Subtitle',
+      required: false,
+      defaultValue: 'Expertise Categories',
+      admin: {
+        description: 'Small label above the title, e.g. EXPERTISE CATEGORIES',
+      },
+    },
+    {
       name: 'items',
       type: 'array',
       label: 'Categories',

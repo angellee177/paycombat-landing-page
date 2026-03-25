@@ -548,6 +548,11 @@ export interface Page {
         blockType: 'processTimeline';
       }
     | {
+        title: string;
+        /**
+         * Small label above the title, e.g. EXPERTISE CATEGORIES
+         */
+        subtitle?: string | null;
         items: {
           /**
            * Material Symbols icon name (e.g. account_balance_wallet), check https://fonts.google.com/icons for options
@@ -1076,6 +1081,8 @@ export interface PagesSelect<T extends boolean = true> {
         categoryCard?:
           | T
           | {
+              title?: T;
+              subtitle?: T;
               items?:
                 | T
                 | {
