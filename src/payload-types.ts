@@ -322,7 +322,7 @@ export interface Page {
     | {
         title: string;
         description?: string | null;
-        columns?: ('2' | '3' | '4') | null;
+        columns?: ('2' | '3' | '4' | '6') | null;
         features?:
           | {
               title: string;
