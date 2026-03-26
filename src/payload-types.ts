@@ -577,6 +577,7 @@ export interface Page {
       }
     | {
         title?: string | null;
+        columns: '2' | '3' | '4' | '6';
         testimonials: {
           quote: string;
           name: string;
@@ -1121,6 +1122,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              columns?: T;
               testimonials?:
                 | T
                 | {
@@ -1207,6 +1209,7 @@ export interface SiteSetting {
   headerLogo?: (number | null) | Media;
   headerLinks?:
     | {
+        type: 'link' | 'dropdown';
         label: string;
         page?: (number | null) | Page;
         /**
@@ -1214,6 +1217,18 @@ export interface SiteSetting {
          */
         url?: string | null;
         highlight?: boolean | null;
+        /**
+         * Only used if type is Dropdown
+         */
+        children?:
+          | {
+              label: string;
+              page?: (number | null) | Page;
+              url?: string | null;
+              highlight?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1246,10 +1261,20 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   headerLinks?:
     | T
     | {
+        type?: T;
         label?: T;
         page?: T;
         url?: T;
         highlight?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              page?: T;
+              url?: T;
+              highlight?: T;
+              id?: T;
+            };
         id?: T;
       };
   headerPrimaryCTA?:

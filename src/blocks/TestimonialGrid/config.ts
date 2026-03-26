@@ -13,6 +13,22 @@ export const TestimonialGridBlock: Block = {
       },
     },
     {
+      name: 'columns',
+      type: 'select',
+      label: 'Columns',
+      required: true,
+      defaultValue: '3',
+      options: [
+        { label: '2 columns', value: '2' },
+        { label: '3 columns', value: '3' },
+        { label: '4 columns', value: '4' },
+        { label: '6 columns', value: '6' },
+      ],
+      admin: {
+        width: '50%',
+      },
+    },
+    {
       name: 'testimonials',
       type: 'array',
       label: 'Testimonials',
