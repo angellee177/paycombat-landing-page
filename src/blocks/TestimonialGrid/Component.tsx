@@ -9,11 +9,25 @@ export type Testimonial = {
 
 export type TestimonialGridBlockProps = {
   title?: string | null
+  columns?: '2' | '3' | '4' | '6' | null
   testimonials: Testimonial[]
 }
 
-export function TestimonialGridComponent({ title, testimonials }: TestimonialGridBlockProps) {
+export function TestimonialGridComponent({
+  title,
+  columns = '3',
+  testimonials,
+}: TestimonialGridBlockProps) {
   if (!testimonials || testimonials.length === 0) return null
+
+  // Responsive grid classes
+  const colClassMap: Record<string, string> = {
+    '2': 'grid-cols-1 md:grid-cols-2',
+    '3': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+    '4': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+    '6': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6',
+  }
+  const gridClass = `grid ${colClassMap[columns] || colClassMap['3']} gap-8`
 
   return (
     <section className="py-24 px-8 bg-surface">
@@ -23,7 +37,7 @@ export function TestimonialGridComponent({ title, testimonials }: TestimonialGri
             {title}
           </h2>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className={gridClass}>
           {testimonials.map((t, idx) => (
             <div
               key={t.name + t.company + idx}

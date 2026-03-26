@@ -577,6 +577,7 @@ export interface Page {
       }
     | {
         title?: string | null;
+        columns: '2' | '3' | '4' | '6';
         testimonials: {
           quote: string;
           name: string;
@@ -1121,6 +1122,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              columns?: T;
               testimonials?:
                 | T
                 | {
