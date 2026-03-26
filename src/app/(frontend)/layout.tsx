@@ -10,10 +10,19 @@ import type { Media } from '@/payload-types'
 import { NavLinks } from '@/components/NavLinks'
 import { MobileNav } from '@/components/MobileNav'
 
+// Match Payload's SiteSettings headerLinks structure
 type SiteLinkConfig = {
+  type?: 'link' | 'dropdown'
   label?: string | null
   url?: string | null
   page?: { slug?: string | null } | number | null
+  highlight?: boolean | null
+  children?: Array<{
+    label?: string | null
+    url?: string | null
+    page?: { slug?: string | null } | number | null
+    highlight?: boolean | null
+  }>
 }
 
 type SiteSettingsData = {
@@ -52,14 +61,45 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const headerLogoIsSvg = headerLogoMedia?.mimeType === 'image/svg+xml'
 
   const headerLinks = (siteSettings.headerLinks || [])
-    .map((link) =>
-      resolveSiteLink({
+    .map((link): any => {
+      if (link.type === 'dropdown' && Array.isArray(link.children) && link.children.length > 0) {
+        return {
+          type: 'dropdown',
+          label: link.label ?? '',
+          highlight: link.highlight ?? false,
+          children: link.children
+            .map((child) => {
+              const resolved = resolveSiteLink({
+                label: child.label,
+                url: child.url,
+                page: child.page,
+              })
+              if (!resolved) return null
+              return {
+                ...resolved,
+                highlight: child.highlight ?? false,
+              }
+            })
+            .filter(Boolean),
+        }
+      }
+      // Single link
+      const resolved = resolveSiteLink({
         label: link.label,
         url: link.url,
         page: link.page,
-      }),
-    )
-    .filter(Boolean) as { label: string; href: string }[]
+      })
+      if (!resolved) return null
+      return {
+        ...resolved,
+        highlight: link.highlight ?? false,
+        type: 'link',
+      }
+    })
+    .filter((l): l is Exclude<typeof l, null | undefined> => Boolean(l))
+  // Debug: log headerLinks to inspect dropdown/children structure
+  // eslint-disable-next-line no-console
+  console.log('DEBUG headerLinks:', JSON.stringify(headerLinks, null, 2))
   const primaryCTA = siteSettings.headerPrimaryCTA || {}
   const secondaryCTA = siteSettings.headerSecondaryCTA || {}
   const footerDescription =

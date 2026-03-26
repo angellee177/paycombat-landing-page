@@ -29,6 +29,16 @@ export const SiteSettings: GlobalConfig = {
       label: 'Header Links',
       fields: [
         {
+          name: 'type',
+          type: 'select',
+          options: [
+            { label: 'Single Link', value: 'link' },
+            { label: 'Dropdown', value: 'dropdown' },
+          ],
+          defaultValue: 'link',
+          required: true,
+        },
+        {
           name: 'label',
           type: 'text',
           required: true,
@@ -37,6 +47,9 @@ export const SiteSettings: GlobalConfig = {
           name: 'page',
           type: 'relationship',
           relationTo: 'pages',
+          admin: {
+            condition: (data, siblingData) => siblingData?.type !== 'dropdown',
+          },
         },
         {
           name: 'url',
@@ -44,12 +57,29 @@ export const SiteSettings: GlobalConfig = {
           admin: {
             description:
               'Optional external/custom URL. If empty and page selected, uses /{page.slug}.',
+            condition: (data, siblingData) => siblingData?.type !== 'dropdown',
           },
         },
         {
           name: 'highlight',
           type: 'checkbox',
           defaultValue: false,
+        },
+        {
+          name: 'children',
+          type: 'array',
+          label: 'Dropdown Links',
+          admin: {
+            // Use siblingData for array item conditional fields in Payload v3+
+            condition: (data, siblingData) => siblingData?.type === 'dropdown',
+            description: 'Only used if type is Dropdown',
+          },
+          fields: [
+            { name: 'label', type: 'text', required: true },
+            { name: 'page', type: 'relationship', relationTo: 'pages' },
+            { name: 'url', type: 'text' },
+            { name: 'highlight', type: 'checkbox', defaultValue: false },
+          ],
         },
       ],
     },

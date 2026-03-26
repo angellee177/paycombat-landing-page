@@ -3,14 +3,21 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export function MobileNav({
-  links,
-  ctas,
-}: {
-  links: { label: string; href: string }[]
-  ctas?: React.ReactNode
-}) {
+type MobileNavLink = {
+  type?: 'link' | 'dropdown'
+  label: string
+  href?: string
+  highlight?: boolean
+  children?: Array<{
+    label: string
+    href?: string
+    highlight?: boolean
+  }>
+}
+
+export function MobileNav({ links, ctas }: { links: MobileNavLink[]; ctas?: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null)
 
   const pathname = usePathname()
   const [locationHash, setLocationHash] = useState('')
@@ -37,7 +44,15 @@ export function MobileNav({
     if (hrefHash) {
       return normPath === normHrefPath && locationHash === hrefHash
     }
-    return normPath === normHrefPath || normPath.startsWith(normHrefPath + '/')
+    // Split into segments for strict matching
+    const hrefSegments = normHrefPath.split('/').filter(Boolean)
+    const pathSegments = normPath.split('/').filter(Boolean)
+    return (
+      normPath === normHrefPath ||
+      (hrefSegments.length > 0 &&
+        pathSegments.length >= hrefSegments.length &&
+        hrefSegments.every((seg, i) => seg === pathSegments[i]))
+    )
   }
 
   return (
@@ -70,11 +85,52 @@ export function MobileNav({
         </div>
         <div className="flex flex-col gap-2 px-6 py-4">
           {links.map((link, i) => {
-            const active = isActive(link.href)
+            if (link.type === 'dropdown' && link.children && link.children.length > 0) {
+              return (
+                <div key={link.label + i} className="flex flex-col">
+                  <button
+                    type="button"
+                    className="py-3 px-2 text-lg font-semibold rounded flex items-center justify-between hover:bg-slate-100 text-slate-700"
+                    onClick={() => setOpenDropdown(openDropdown === i ? null : i)}
+                    aria-haspopup="menu"
+                    aria-expanded={openDropdown === i}
+                  >
+                    <span>{link.label}</span>
+                    <span className="material-symbols-outlined text-base ml-1">expand_more</span>
+                  </button>
+                  {openDropdown === i && (
+                    <div className="flex flex-col pl-4 border-l border-slate-200 bg-slate-50 rounded-b-lg mt-1">
+                      {link.children.map((child, cidx) => {
+                        const childActive = child.href ? isActive(child.href) : false
+                        return (
+                          <Link
+                            key={child.label + cidx}
+                            href={child.href || '#'}
+                            className={`py-1.5 px-2 text-sm rounded hover:bg-slate-100 ${
+                              childActive
+                                ? 'text-primary font-bold border-b-2 border-primary'
+                                : child.highlight
+                                  ? 'text-primary font-bold'
+                                  : 'text-slate-700'
+                            } hover:text-primary`}
+                            onClick={() => setOpen(false)}
+                          >
+                            {child.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              )
+            }
+            // Single link
+            const href = link.href || '#'
+            const active = link.href ? isActive(link.href) : false
             return (
               <Link
-                key={link.href + i}
-                href={link.href}
+                key={href + i}
+                href={href}
                 className={`py-3 px-2 text-lg font-semibold rounded hover:bg-slate-100 ${active ? 'text-primary font-bold border-b-2 border-primary' : 'text-slate-600'}`}
                 onClick={() => setOpen(false)}
               >
