@@ -38,7 +38,7 @@ export function FeatureGridComponent({
 }: FeatureGridProps) {
   if (!title && !description && (!features || features.length === 0)) return null
 
-  const colClass = columns || '3'
+  const colClass = (columns || '3') as '2' | '3' | '4' | '6'
   // Use tighter gap for 6 columns
   const gridClass =
     colClass === '6'
