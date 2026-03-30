@@ -605,6 +605,17 @@ export interface Message {
   subject: string;
   message: string;
   resolved?: boolean | null;
+  replies?:
+    | {
+        senderName?: string | null;
+        senderEmail?: string | null;
+        role: 'admin' | 'user';
+        body: string;
+        privateNote?: boolean | null;
+        sentAt: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1150,6 +1161,17 @@ export interface MessagesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
   resolved?: T;
+  replies?:
+    | T
+    | {
+        senderName?: T;
+        senderEmail?: T;
+        role?: T;
+        body?: T;
+        privateNote?: T;
+        sentAt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
