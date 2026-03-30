@@ -21,13 +21,14 @@ export function TestimonialGridComponent({
   if (!testimonials || testimonials.length === 0) return null
 
   // Responsive grid classes
-  const colClassMap: Record<string, string> = {
+  const colClassMap: Record<'2' | '3' | '4' | '6', string> = {
     '2': 'grid-cols-1 md:grid-cols-2',
     '3': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
     '4': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
     '6': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6',
   }
-  const gridClass = `grid ${colClassMap[columns] || colClassMap['3']} gap-8`
+  const colClass = (columns || '3') as '2' | '3' | '4' | '6'
+  const gridClass = `grid ${colClassMap[colClass]} gap-8`
 
   return (
     <section className="py-24 px-8 bg-surface">

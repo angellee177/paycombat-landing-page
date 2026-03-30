@@ -1,0 +1,85 @@
+.reply-editor-shell {
+  background: #15171c;
+  padding: 16px;
+}
+
+.reply-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid #20242e;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background: #0f1116;
+  padding: 8px;
+}
+
+.reply-editor-btn {
+  border: 1px solid #2a2d34;
+  background: #15171c;
+  color: #d9dceb;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 36px;
+  padding: 6px 10px;
+}
+
+.reply-editor-btn:hover {
+  border-color: #2e5cff;
+  color: #ffffff;
+}
+
+.reply-editor-content {
+  min-height: 170px;
+  border: 1px solid #20242e;
+  border-radius: 0 0 4px 4px;
+  background: #15171c;
+  color: #e5e7ef;
+  line-height: 1.6;
+  outline: none;
+  padding: 12px;
+  white-space: pre-wrap;
+}
+
+.reply-editor-content:empty::before {
+  content: attr(data-placeholder);
+  color: #7f8697;
+}
+
+.reply-editor-content blockquote {
+  border-left: 4px solid #2e5cff;
+  color: #a6acbc;
+  margin: 8px 0;
+  padding-left: 12px;
+}
+
+.reply-editor-content ul,
+.reply-editor-content ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.thread-message-body p,
+.thread-message-body div {
+  margin: 0 0 10px;
+}
+
+.thread-message-body p:last-child,
+.thread-message-body div:last-child {
+  margin-bottom: 0;
+}
+
+.thread-message-body blockquote {
+  border-left: 4px solid #2e5cff;
+  color: #a6acbc;
+  margin: 8px 0;
+  padding-left: 12px;
+}
+
+.thread-message-body ul,
+.thread-message-body ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}

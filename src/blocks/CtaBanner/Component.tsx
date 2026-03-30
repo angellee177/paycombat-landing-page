@@ -46,7 +46,7 @@ export function CtaBannerComponent({
   const textColor = background === 'black' ? 'text-white' : 'text-white'
 
   // Button style
-  let buttonClass =
+  const buttonClass =
     button.style === 'blackWhite'
       ? 'inline-block bg-white text-black px-10 py-5 rounded-full font-headline font-bold text-xl shadow-lg hover:bg-[#bbc3ff] hover:text-black transition-all scale-95 active:scale-90'
       : 'inline-block bg-white text-[#2E47D1] px-10 py-5 rounded-full font-headline font-bold text-xl shadow-lg hover:bg-[#bbc3ff] hover:text-[#2E47D1] transition-all scale-95 active:scale-90'

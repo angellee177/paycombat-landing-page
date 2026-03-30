@@ -6,6 +6,15 @@ export const Messages: CollectionConfig = {
     useAsTitle: 'subject',
     defaultColumns: ['from', 'email', 'subject', 'message', 'resolved', 'createdAt'],
     group: 'Content',
+    components: {
+      views: {
+        edit: {
+          default: {
+            Component: '@/app/(payload)/admin/MessageDetailView#MessageDetailView',
+          },
+        },
+      },
+    },
   },
   access: {
     read: ({ req: { user } }) => Boolean(user), // Only authenticated users can read
@@ -17,7 +26,7 @@ export const Messages: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', readOnly: true },
     },
     {
       name: 'from',
@@ -33,16 +42,19 @@ export const Messages: CollectionConfig = {
       name: 'email',
       type: 'email',
       required: true,
+      admin: { readOnly: true },
     },
     {
       name: 'subject',
       type: 'text',
       required: true,
+      admin: { readOnly: true },
     },
     {
       name: 'message',
       type: 'textarea',
       required: true,
+      admin: { readOnly: true },
     },
     {
       name: 'resolved',
@@ -53,6 +65,44 @@ export const Messages: CollectionConfig = {
       access: {
         update: ({ req: { user } }) => !!user && user.roles?.includes('admin'),
       },
+    },
+    {
+      name: 'replies',
+      type: 'array',
+      admin: {
+        hidden: true,
+      },
+      fields: [
+        {
+          name: 'senderName',
+          type: 'text',
+        },
+        {
+          name: 'senderEmail',
+          type: 'email',
+        },
+        {
+          name: 'role',
+          type: 'select',
+          options: ['admin', 'user'],
+          required: true,
+        },
+        {
+          name: 'body',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'privateNote',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+        {
+          name: 'sentAt',
+          type: 'date',
+          required: true,
+        },
+      ],
     },
   ],
   timestamps: true,
